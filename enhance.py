@@ -30,7 +30,6 @@ import itertools
 import threading
 import collections
 
-
 # Configure all options first so we can later custom-load other libraries (Theano) based on device specified by user.
 parser = argparse.ArgumentParser(description='Generate a new image by applying style onto a content image.',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -112,6 +111,7 @@ os.environ.setdefault('THEANO_FLAGS', 'floatX=float32,device={},force_device=Tru
 # Scientific & Imaging Libraries
 import numpy as np
 import scipy.ndimage, scipy.misc, PIL.Image
+import imageio
 
 # Numeric Computing (GPU)
 import theano, theano.tensor as T
@@ -580,7 +580,7 @@ if __name__ == "__main__":
         enhancer = NeuralEnhancer(loader=False)
         for filename in args.files:
             print(filename, end=' ')
-            img = scipy.ndimage.imread(filename, mode='RGB')
+            img = imageio.imread(filename, pilmode='RGB')
             out = enhancer.process(img)
             out.save(os.path.splitext(filename)[0]+'_ne%ix.png' % args.zoom)
             print(flush=True)
